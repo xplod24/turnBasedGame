@@ -1,5 +1,5 @@
 public class Armor extends Item {
-    private int defenseBonus;
+    private final int defenseBonus;
 
     public Armor(String name, String description, int defenseBonus) {
         super(name, description);

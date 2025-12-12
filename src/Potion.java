@@ -1,6 +1,6 @@
 public class Potion extends Item implements Consumable {
-    private int healAmount;
-    private StatusEffect effect;
+    private final int healAmount;
+    private final StatusEffect effect;
 
     public Potion(String name, String description, int healAmount, StatusEffect effect) {
         super(name, description);

@@ -1,5 +1,5 @@
 public class Monster extends GameEntity implements Lootable {
-    private Item loot;
+    private final Item loot;
 
     public Monster(String name, int hp, int str, int def, Item loot) {
         super(name, hp, str, def);
