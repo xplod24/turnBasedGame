@@ -1,6 +1,6 @@
 public abstract class Item {
-    protected String name;
-    protected String description;
+    protected final String name;
+    protected final String description;
 
     public Item(String name, String description) {
         this.name = name;
@@ -9,6 +9,9 @@ public abstract class Item {
 
     public String getName() { return name; }
 
+    // Used for Swing Tooltips (HTML format)
+    public abstract String getStatsInfo();
+
     @Override
-    public String toString() { return name + " (" + description + ")"; }
+    public String toString() { return name; }
 }

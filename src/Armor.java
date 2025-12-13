@@ -7,4 +7,11 @@ public class Armor extends Item {
     }
 
     public int getDefenseBonus() { return defenseBonus; }
+
+    @Override
+    public String getStatsInfo() {
+        return "<html><b>" + name + "</b><br>"
+                + "<i>" + description + "</i><br>"
+                + "Defense: <font color='blue'>+" + defenseBonus + "</font></html>";
+    }
 }

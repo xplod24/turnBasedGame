@@ -10,8 +10,16 @@ public class Potion extends Item implements Consumable {
 
     @Override
     public void use(Player player) {
-        System.out.println("You drank the " + name + ".");
+        Logger.log("You drank the " + name + ".");
         if (healAmount > 0) player.heal(healAmount);
         if (effect != null) player.addEffect(new StatusEffect(effect));
+    }
+
+    @Override
+    public String getStatsInfo() {
+        String info = "<html><b>" + name + "</b><br><i>" + description + "</i>";
+        if (healAmount > 0) info += "<br>Heals: <font color='green'>" + healAmount + " HP</font>";
+        if (effect != null) info += "<br>Effect: " + effect.name;
+        return info + "</html>";
     }
 }

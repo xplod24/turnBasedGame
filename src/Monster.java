@@ -1,24 +1,27 @@
 public class Monster extends GameEntity implements Lootable {
-    private final Item loot;
+    private Item loot;
+    private double dropChance; // 0.0 to 1.0
 
-    public Monster(String name, int hp, int str, int def, Item loot) {
-        super(name, hp, str, def);
+    public Monster(String name, int level, int hp, int str, int def, Item loot, double dropChance) {
+        super(name, level, hp, str, def);
         this.loot = loot;
+        this.dropChance = dropChance;
     }
 
     public int calculateAttackDamage() {
-        // Monsters have less variance (0.9 to 1.1)
         double variance = 0.9 + (Math.random() * 0.2);
         return (int) (getEffectiveStrength() * variance);
     }
 
     @Override
-    public String getAttackDescription() {
-        return "attacks ferociously";
-    }
+    public String getAttackDescription() { return "attacks ferociously"; }
 
     @Override
     public Item getLoot() {
-        return loot;
+        if (Math.random() <= dropChance) return loot;
+        return null;
     }
+
+    public Item getPossibleLoot() { return loot; }
+    public double getDropChance() { return dropChance; }
 }

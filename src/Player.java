@@ -7,28 +7,52 @@ public class Player extends GameEntity {
     private List<Item> inventory;
     private Weapon equippedWeapon;
     private Armor equippedArmor;
-    private Set<String> bestiary;
+    private Set<String> killedMonsters;
 
     public Player(String name) {
-        super(name, 100, 10, 5); // Start HP: 100, Str: 10, Def: 5
+        super(name, 1, 100, 10, 5);
         this.inventory = new ArrayList<>();
-        this.bestiary = new HashSet<>();
+        this.killedMonsters = new HashSet<>();
     }
+
+    // --- Equipment Logic ---
 
     public void equipWeapon(Weapon w) {
         this.equippedWeapon = w;
-        System.out.println("You equipped: " + w.getName());
+        Logger.log("Equipped weapon: " + w.getName());
+    }
+
+    public void unequipWeapon() {
+        if (equippedWeapon != null) {
+            Logger.log("Unequipped: " + equippedWeapon.getName());
+            this.equippedWeapon = null;
+        }
     }
 
     public void equipArmor(Armor a) {
         this.equippedArmor = a;
-        System.out.println("You equipped: " + a.getName());
+        Logger.log("Equipped armor: " + a.getName());
     }
+
+    public void unequipArmor() {
+        if (equippedArmor != null) {
+            Logger.log("Unequipped: " + equippedArmor.getName());
+            this.equippedArmor = null;
+        }
+    }
+
+    public Weapon getEquippedWeapon() { return equippedWeapon; }
+    public Armor getEquippedArmor() { return equippedArmor; }
+
+    public boolean isEquipped(Item item) {
+        return item == equippedWeapon || item == equippedArmor;
+    }
+
+    // --- Combat Logic ---
 
     public int calculateAttackDamage() {
         int weaponDmg = (equippedWeapon != null) ? equippedWeapon.getDamageBonus() : 0;
         int totalStr = getEffectiveStrength() + weaponDmg;
-        // Variance: 0.8x to 1.2x
         double variance = 0.8 + (Math.random() * 0.4);
         return (int) (totalStr * variance);
     }
@@ -38,31 +62,10 @@ public class Player extends GameEntity {
         return getEffectiveDefense() + armorDef;
     }
 
-    public void addToBestiary(String monsterName) {
-        if (!bestiary.contains(monsterName)) {
-            bestiary.add(monsterName);
-            System.out.println("*** NEW ENTRY ADDED TO BESTIARY: " + monsterName + " ***");
-        }
-    }
+    // --- Utils ---
 
-    public void showBestiary() {
-        System.out.println("\n=== " + name.toUpperCase() + "'S BESTIARY ===");
-        if (bestiary.isEmpty()) System.out.println("No monsters recorded yet.");
-        else bestiary.forEach(m -> System.out.println("- " + m));
-        System.out.println("==============================\n");
-    }
-
-    public void showStats() {
-        System.out.println("\n=== " + name + " ===");
-        System.out.println("HP: " + currentHp + "/" + maxHp);
-        System.out.println("STR: " + getEffectiveStrength() + " (Base: " + baseStrength + ")");
-        System.out.println("DEF: " + calculateDefense() + " (Base: " + baseDefense + ")");
-        System.out.println("Weapon: " + (equippedWeapon != null ? equippedWeapon.getName() : "Fists"));
-        System.out.println("Armor: " + (equippedArmor != null ? equippedArmor.getName() : "Clothes"));
-        System.out.println("Active Effects: " + activeEffects.size());
-        System.out.println("================\n");
-    }
-
+    public void recordKill(String monsterName) { killedMonsters.add(monsterName); }
+    public boolean hasKilled(String monsterName) { return killedMonsters.contains(monsterName); }
     public List<Item> getInventory() { return inventory; }
 
     @Override
